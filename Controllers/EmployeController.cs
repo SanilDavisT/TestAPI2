@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using TestAPI2.Model;
 
 namespace TestAPI2.Controllers
 {
@@ -7,6 +8,18 @@ namespace TestAPI2.Controllers
     [ApiController]
     public class EmployeController : ControllerBase
     {
+
+        EmployeDbContext _context;
+
+        public EmployeController(EmployeDbContext context)
+        {
+           
+            _context = context;
+
+
+        }
+
+
         [HttpPost]
         [Route ("AddEmploye")] 
         public Employe AddEmployee(Employe employe)
@@ -30,11 +43,17 @@ namespace TestAPI2.Controllers
             e2.name = "Ashiq";
             e2.place = "Palakad";
 
+            Employeelist.Add(e1);
+            Employeelist.Add(e2);
+
+
+
+            _context.Add(e1);
+            _context.Add(e2);
+            _context.SaveChanges();
+
+
             return Employeelist;
-             
-
-
-
 
         }
 
