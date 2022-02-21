@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using TestAPI2.Model;
 
 namespace TestAPI2.Controllers
@@ -24,7 +25,12 @@ namespace TestAPI2.Controllers
         [Route ("AddEmploye")] 
         public Employe AddEmployee(Employe employe)
         {
-            return employe;
+
+
+            _context.emps.Add(employe);
+            _context.SaveChanges();
+             return employe;
+
             
         }
 
@@ -50,12 +56,63 @@ namespace TestAPI2.Controllers
 
             _context.Add(e1);
             _context.Add(e2);
-            _context.SaveChanges();
+           _context.SaveChanges();
 
+            
 
             return Employeelist;
 
         }
+
+        [HttpGet]
+        [Route("GetAllEmploye")]
+
+        public List<Employe> GetAllEmploye()
+        {
+            var Employeelist2 = _context.emps.ToList();
+
+            return Employeelist2;
+        }
+
+
+        [HttpDelete]
+        [Route("DeleteEmploye")]
+
+        public void DeleteEmploye( int id)
+        {
+            var example = _context.emps.Find(id);
+
+           
+            _context.emps.Remove(example);
+
+           
+            _context.SaveChanges();
+                       
+
+        }
+
+
+        [HttpPut]
+        [Route("PutEmploye")]
+
+        public void PutEmploye(Employe employe, int id)
+        {
+
+            
+
+            if(id == employe.ID)
+            {
+                _context.Entry(employe).State = EntityState.Modified;
+
+
+            }
+
+            _context.SaveChanges();
+
+
+
+        }
+
 
 
     }
